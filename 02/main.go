@@ -38,7 +38,6 @@ func (r *record) isValid2() bool {
 	return n > r.min && n >= r.max &&
 		(r.password[r.min-1] == r.testChar[0] && r.password[r.max-1] != r.testChar[0]) ||
 		(r.password[r.min-1] != r.testChar[0] && r.password[r.max-1] == r.testChar[0])
-
 }
 
 func main() {
