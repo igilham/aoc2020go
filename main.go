@@ -31,7 +31,7 @@ func main() {
 	case 2:
 		advent02.Run(util.StringToLines(input, true))
 	case 3:
-		advent03.Run(util.StringToLines(input, true), 0, 3, 1)
+		advent03.Run(util.StringToLines(input, true))
 	default:
 		fmt.Println("no problem specified")
 	}
