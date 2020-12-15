@@ -8,6 +8,8 @@ import (
 )
 
 var (
+	// It took me ages to realise I needed to include the start and end tokens
+	// in the expressions (^ and $)
 	colourCodeRegexp = regexp.MustCompile("^#[0-9a-f]{6}$")
 	pidRegexp        = regexp.MustCompile("^\\d{9}$")
 )
