@@ -1,31 +1,20 @@
-package main
+package advent01
 
 import (
 	"errors"
 	"fmt"
-	"io"
 	"log"
-	"os"
 	"strconv"
-	"strings"
 )
 
 const (
 	// buffer size in bytes
-	nbuf       = 1024 * 4
 	target int = 2020
 )
 
-func main() {
-	reader := os.Stdin
-	var writer strings.Builder
-
-	if error := Cat(reader, &writer); error != nil {
-		log.Fatalf("failed to read input: %v\n", error)
-	}
-	input := writer.String()
-	strRecords := strings.Split(input, "\n")
-	nums, err := toNumbers(strRecords)
+// Run calculates the answer to the first advent problem
+func Run(lines []string) {
+	nums, err := toNumbers(lines)
 	if err != nil {
 		log.Fatalf("%v\n", err)
 	}
@@ -80,22 +69,4 @@ func toNumbers(records []string) ([]int, error) {
 		nums = append(nums, n)
 	}
 	return nums, nil
-}
-
-// Cat reads a single file and writes to os.Stdout.
-func Cat(reader io.Reader, writer io.Writer) error {
-	var buf [nbuf]byte
-	for {
-		nr, er := reader.Read(buf[:])
-		switch {
-		case nr < 0:
-			return errors.New("read error: " + er.Error())
-		case nr == 0: // EOF
-			return nil
-		case nr > 0:
-			if nw, ew := writer.Write(buf[0:nr]); nw != nr {
-				return errors.New("write error: " + ew.Error())
-			}
-		}
-	}
 }

@@ -1,11 +1,8 @@
-package main
+package advent02
 
 import (
-	"errors"
 	"fmt"
-	"io"
 	"log"
-	"os"
 	"strconv"
 	"strings"
 )
@@ -40,15 +37,8 @@ func (r *record) isValid2() bool {
 		(r.password[r.min-1] != r.testChar[0] && r.password[r.max-1] == r.testChar[0])
 }
 
-func main() {
-	reader := os.Stdin
-	var writer strings.Builder
-	if error := Cat(reader, &writer); error != nil {
-		log.Fatalf("failed to read input: %v\n", error)
-	}
-
-	input := writer.String()
-	lines := strings.Split(input, "\n")
+// Run calculates the answer to the second advent problem
+func Run(lines []string) {
 	validCount1 := 0
 	validCount2 := 0
 
@@ -99,22 +89,4 @@ func parseMinMax(text string) (int, int, error) {
 		return -1, -1, e2
 	}
 	return min, max, nil
-}
-
-// Cat reads a single file and writes to os.Stdout.
-func Cat(reader io.Reader, writer io.Writer) error {
-	var buf [nbuf]byte
-	for {
-		nr, er := reader.Read(buf[:])
-		switch {
-		case nr < 0:
-			return errors.New("read error: " + er.Error())
-		case nr == 0: // EOF
-			return nil
-		case nr > 0:
-			if nw, ew := writer.Write(buf[0:nr]); nw != nr {
-				return errors.New("write error: " + ew.Error())
-			}
-		}
-	}
 }
