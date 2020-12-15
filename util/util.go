@@ -13,7 +13,6 @@ const (
 
 // PrintLines prints lines in an easy-to-read format
 func PrintLines(rows []string) {
-	fmt.Println("input:")
 	for _, r := range rows {
 		fmt.Printf("\"%v\"\n", r)
 	}

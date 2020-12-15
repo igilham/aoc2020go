@@ -8,6 +8,7 @@ import (
 
 	"github.com/igilham/aoc2020go/advent01"
 	"github.com/igilham/aoc2020go/advent02"
+	"github.com/igilham/aoc2020go/advent03"
 	"github.com/igilham/aoc2020go/util"
 )
 
@@ -22,13 +23,15 @@ func main() {
 		log.Fatalf("%v", err)
 	}
 
+	fmt.Printf("running problem %v\n", *advent)
+
 	switch *advent {
 	case 1:
 		advent01.Run(util.StringToLines(input, true))
 	case 2:
 		advent02.Run(util.StringToLines(input, true))
-	// case 3:
-	// 	advent03.Run(util.StringToLines(input, true))
+	case 3:
+		advent03.Run(util.StringToLines(input, true), 0, 3, 1)
 	default:
 		fmt.Println("no problem specified")
 	}
