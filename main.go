@@ -35,7 +35,7 @@ func main() {
 	case 3:
 		advent03.Run(util.StringToLines(input, true))
 	case 4:
-		advent04.Run(input)
+		advent04.Run(util.StringToBlocks(input))
 	case 5:
 		advent05.Run(util.StringToLines(input, true))
 	default:

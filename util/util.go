@@ -18,6 +18,21 @@ func PrintLines(rows []string) {
 	}
 }
 
+// StringToGroupedLines groups parses the input into a list of groups where each group is a list of lines
+func StringToGroupedLines(input string, dropEmptyLine bool) [][]string {
+	groupedLines := [][]string{}
+	blocks := StringToBlocks(input)
+	for _, block := range blocks {
+		groupedLines = append(groupedLines, StringToLines(block, dropEmptyLine))
+	}
+	return groupedLines
+}
+
+// StringToBlocks splits a string into groups separated by a blank line
+func StringToBlocks(input string) []string {
+	return strings.Split(input, "\n\n")
+}
+
 // StringToLines splits a string into lines, optionally dropping a final empty line
 func StringToLines(input string, dropEmptyLine bool) []string {
 	rows := strings.Split(input, "\n")

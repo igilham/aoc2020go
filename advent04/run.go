@@ -48,11 +48,9 @@ func (p *Passport) isValid() bool {
 }
 
 // Run runs the fourth problem
-func Run(input string) {
-	// blank lines separate passports
-	inputBlocks := strings.Split(input, "\n\n")
+func Run(blocks []string) {
 	passports := []*Passport{}
-	for _, block := range inputBlocks {
+	for _, block := range blocks {
 		passports = append(passports, parsePassport(block))
 	}
 
