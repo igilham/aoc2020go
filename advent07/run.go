@@ -12,18 +12,18 @@ var isNumberRegexp = regexp.MustCompile("^\\d+$")
 
 // Run runs the seventh problem
 func Run(lines []string) {
+	have := "shiny gold"
 	bags := parseRules(lines)
 
 	// fmt.Printf("Rules:\n%v", bags)
 	// fmt.Printf("total: %v\n", len(bags))
 
-	// scenario 1: you have a shiny gold bag
-	have1 := "shiny gold"
-	directHolders := bags.whatCanHold(have1)
-	fmt.Printf("%v bags can directly hold %v\n", len(directHolders), have1)
+	// problem one: how many outermost holders are there?
+	allHolders := bags.allHolders(have)
+	fmt.Printf("%v bags can hold %v\n", len(allHolders), have)
 
-	allHolders := bags.allHolders(have1)
-	fmt.Printf("%v bags can hold %v\n", len(allHolders), have1)
+	// problem 2: how many bags are needed?
+	fmt.Printf("a %v bag must contain %v bags\n", have, bags.countContents(have))
 }
 
 // BagRules is a map of parsed inpot data
@@ -70,9 +70,36 @@ func (r BagRules) whatCanHold(s string) map[string]bool {
 	return holders
 }
 
+func (r BagRules) countContents(s string) int {
+	sum := 0
+	contents := r[s]
+	sum += contents.sumValues()
+	for k, v := range contents {
+		addition := r.countContents(k)
+		sum += v * addition
+	}
+	return sum
+}
+
 // Contents is a convenience alias for what's in the top level map
 // of the data model
 type Contents map[string]int
+
+func (c Contents) String() string {
+	var sb strings.Builder
+	for k, v := range c {
+		sb.WriteString(fmt.Sprintf("%v %v bags\n", v, k))
+	}
+	return sb.String()
+}
+
+func (c Contents) sumValues() int {
+	n := 0
+	for _, v := range c {
+		n = n + v
+	}
+	return n
+}
 
 func parseRules(lines []string) BagRules {
 	bags := make(BagRules)
@@ -120,6 +147,20 @@ func merge(ms ...map[string]bool) map[string]bool {
 	for _, m := range ms {
 		for k, v := range m {
 			res[k] = v
+		}
+	}
+	return res
+}
+
+func mergeContents(ms ...Contents) Contents {
+	res := make(Contents)
+	for _, m := range ms {
+		for k, v := range m {
+			if res[k] == 0 {
+				res[k] = v
+			} else {
+				res[k] = res[k] + v
+			}
 		}
 	}
 	return res
