@@ -15,7 +15,12 @@ func Run(lines []string) {
 	bags := parseRules(lines)
 
 	fmt.Printf("Rules:\n%v", bags)
-	fmt.Printf("total: %v", len(bags))
+	fmt.Printf("total: %v\n", len(bags))
+
+	// scenario 1: you have a shiny gold bag
+	have1 := "shiny gold"
+	directHolders := bags.whatCanHold(have1)
+	fmt.Printf("%v bags can directly hold %v\n", len(directHolders), have1)
 }
 
 type BagRules map[string]Contents
@@ -35,6 +40,19 @@ func (r BagRules) String() string {
 		sb.WriteString(fmt.Sprintf("%v bags contain %v.\n", k, contentsStr))
 	}
 	return sb.String()
+}
+
+func (r BagRules) whatCanHold(s string) []string {
+	holders := []string{}
+	for k, v := range r {
+		if v[s] > 0 {
+			fmt.Printf("%v can hold %v\n", k, s)
+			holders = append(holders, v)
+		}
+	}
+
+	// fmt.Printf("nothing can hold %v\n", s)
+	return holders
 }
 
 type Contents map[string]int
