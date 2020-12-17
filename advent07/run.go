@@ -14,15 +14,19 @@ var isNumberRegexp = regexp.MustCompile("^\\d+$")
 func Run(lines []string) {
 	bags := parseRules(lines)
 
-	fmt.Printf("Rules:\n%v", bags)
-	fmt.Printf("total: %v\n", len(bags))
+	// fmt.Printf("Rules:\n%v", bags)
+	// fmt.Printf("total: %v\n", len(bags))
 
 	// scenario 1: you have a shiny gold bag
 	have1 := "shiny gold"
 	directHolders := bags.whatCanHold(have1)
 	fmt.Printf("%v bags can directly hold %v\n", len(directHolders), have1)
+
+	allHolders := bags.allHolders(have1)
+	fmt.Printf("%v bags can hold %v\n", len(allHolders), have1)
 }
 
+// BagRules is a map of parsed inpot data
 type BagRules map[string]Contents
 
 func (r BagRules) String() string {
@@ -30,7 +34,7 @@ func (r BagRules) String() string {
 	for k, v := range r {
 		contents := []string{}
 		for k1, v1 := range v {
-			contents = append(contents, fmt.Sprintf("%v %v", v1, k1))
+			contents = append(contents, fmt.Sprintf("%v %v bags", v1, k1))
 		}
 		contentsStr := strings.Join(contents, ", ")
 		if contentsStr == "" {
@@ -42,19 +46,32 @@ func (r BagRules) String() string {
 	return sb.String()
 }
 
-func (r BagRules) whatCanHold(s string) []string {
-	holders := []string{}
-	for k, v := range r {
-		if v[s] > 0 {
-			fmt.Printf("%v can hold %v\n", k, s)
-			holders = append(holders, v)
-		}
-	}
-
-	// fmt.Printf("nothing can hold %v\n", s)
+func (r BagRules) allHolders(s string) map[string]bool {
+	direct := r.whatCanHold(s)
+	holders := merge(direct, r.allHoldersMap(direct))
 	return holders
 }
 
+func (r BagRules) allHoldersMap(s map[string]bool) map[string]bool {
+	holders := make(map[string]bool)
+	for k := range s {
+		holders = merge(holders, r.allHolders(k))
+	}
+	return holders
+}
+
+func (r BagRules) whatCanHold(s string) map[string]bool {
+	holders := make(map[string]bool)
+	for k, v := range r {
+		if v[s] > 0 {
+			holders[k] = true
+		}
+	}
+	return holders
+}
+
+// Contents is a convenience alias for what's in the top level map
+// of the data model
 type Contents map[string]int
 
 func parseRules(lines []string) BagRules {
@@ -96,4 +113,14 @@ func getNum(s string) (int, error) {
 		return 0, err2
 	}
 	return i, nil
+}
+
+func merge(ms ...map[string]bool) map[string]bool {
+	res := make(map[string]bool)
+	for _, m := range ms {
+		for k, v := range m {
+			res[k] = v
+		}
+	}
+	return res
 }
