@@ -13,6 +13,7 @@ import (
 	"github.com/igilham/aoc2020go/advent05"
 	"github.com/igilham/aoc2020go/advent06"
 	"github.com/igilham/aoc2020go/advent07"
+	"github.com/igilham/aoc2020go/advent08"
 	"github.com/igilham/aoc2020go/util"
 )
 
@@ -44,6 +45,8 @@ func main() {
 		advent06.Run(util.StringToGroupedLines(input, true))
 	case 7:
 		advent07.Run(util.StringToLines(input, true))
+	case 8:
+		advent08.Run(util.StringToLines(input, true))
 	default:
 		fmt.Println("no problem specified")
 	}
