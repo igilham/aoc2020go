@@ -14,10 +14,15 @@ func Run(lines []string) {
 		log.Fatalln(err)
 	}
 
+	problem1(program)
+}
+
+func problem1(program []*Instruction) {
 	cpu := newCPU()
-	err2 := cpu.execProgram(program)
-	if err2 != nil {
-		fmt.Println("Infinite loop found")
+	err := cpu.execProgram(program)
+	if err != nil {
+		fmt.Println("infinite loop found")
+		fmt.Println(err)
 	}
 	fmt.Printf("program terminated in state: %v\n", cpu)
 }
@@ -57,7 +62,7 @@ func (cpu *CPU) execProgram(program []*Instruction) error {
 		currentPC := cpu.pc
 		i := program[currentPC]
 		if found := executed[currentPC]; found == true {
-			return fmt.Errorf("already executed: %v: %v, (%v)", currentPC, i, cpu)
+			return fmt.Errorf("already executed %v: \"%v\", (%v)", currentPC, i, cpu)
 		}
 		// fmt.Printf("executing %v: %v\n", currentPC, i)
 		cpu.exec(i)
