@@ -15,19 +15,11 @@ func Run(lines []string) {
 	}
 
 	cpu := newCPU()
-	executed := make(map[int]bool)
-	for cpu.pc < len(program) {
-		currentPC := cpu.pc
-		i := program[currentPC]
-		if found := executed[currentPC]; found == true {
-			fmt.Printf("already executed: %v: %v, (%v)", currentPC, i, cpu)
-			break
-		}
-		// fmt.Printf("executing %v: %v\n", currentPC, i)
-		cpu.exec(i)
-		// fmt.Printf("executed %v\n", cpu)
-		executed[currentPC] = true
+	err2 := cpu.execProgram(program)
+	if err2 != nil {
+		fmt.Println("Infinite loop found")
 	}
+	fmt.Printf("program terminated in state: %v\n", cpu)
 }
 
 // CPU represents the state of the registers
@@ -57,6 +49,22 @@ func (cpu *CPU) exec(i *Instruction) {
 	case "jmp":
 		cpu.pc += i.arg
 	}
+}
+
+func (cpu *CPU) execProgram(program []*Instruction) error {
+	executed := make(map[int]bool)
+	for cpu.pc < len(program) {
+		currentPC := cpu.pc
+		i := program[currentPC]
+		if found := executed[currentPC]; found == true {
+			return fmt.Errorf("already executed: %v: %v, (%v)", currentPC, i, cpu)
+		}
+		// fmt.Printf("executing %v: %v\n", currentPC, i)
+		cpu.exec(i)
+		// fmt.Printf("executed %v\n", cpu)
+		executed[currentPC] = true
+	}
+	return nil
 }
 
 // Instruction represents a CPU instruction
