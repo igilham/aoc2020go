@@ -27,6 +27,7 @@ func Run(lines []string) {
 	fmt.Printf("the product of 1-jolt and 3-jolt differences is %v\n", dist[1]*dist[3])
 
 	// part 2 solution stolen from https://davidlozzi.com/2020/12/10/advent-of-code-day-10-check-back-in-629-days/
+	// I did not fully understand the solution at time of writing
 	variants := countVariations(outlet, joltages)
 	// fmt.Printf("variants: %v\n", variants)
 	nGroups := len(variants)
