@@ -1,10 +1,10 @@
 package advent01
 
 import (
-	"errors"
 	"fmt"
 	"log"
-	"strconv"
+
+	"github.com/igilham/aoc2020go/util"
 )
 
 const (
@@ -14,7 +14,7 @@ const (
 
 // Run calculates the answer to the first advent problem
 func Run(lines []string) {
-	nums, err := toNumbers(lines)
+	nums, err := util.ToNumbers(lines)
 	if err != nil {
 		log.Fatalf("%v\n", err)
 	}
@@ -53,20 +53,4 @@ func find3Nums(nums []int) (int, int, int) {
 		}
 	}
 	return -1, -1, -1
-}
-
-func toNumbers(records []string) ([]int, error) {
-	var nums []int
-	for _, s := range records {
-		if s == "" {
-			break
-		}
-
-		n, err := strconv.Atoi(s)
-		if err != nil {
-			return nil, errors.New("Failed to convert to numbers")
-		}
-		nums = append(nums, n)
-	}
-	return nums, nil
 }

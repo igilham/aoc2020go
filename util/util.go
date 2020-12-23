@@ -4,6 +4,7 @@ import (
 	"errors"
 	"fmt"
 	"io"
+	"strconv"
 	"strings"
 )
 
@@ -81,4 +82,21 @@ func Cat(reader io.Reader, writer io.Writer) error {
 			}
 		}
 	}
+}
+
+// ToNumbers converst a slice of strings to a slice of ints
+func ToNumbers(records []string) ([]int, error) {
+	var nums []int
+	for _, s := range records {
+		if s == "" {
+			break
+		}
+
+		n, err := strconv.Atoi(s)
+		if err != nil {
+			return nil, errors.New("Failed to convert to numbers")
+		}
+		nums = append(nums, n)
+	}
+	return nums, nil
 }
