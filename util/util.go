@@ -100,3 +100,44 @@ func ToNumbers(records []string) ([]int, error) {
 	}
 	return nums, nil
 }
+
+// Contains returns true if the slice contains the search term
+func Contains(nums []int, n int) bool {
+	for _, m := range nums {
+		if n == m {
+			return true
+		}
+	}
+	return false
+}
+
+// Sum sums the values in a slice
+func Sum(nums []int) int {
+	acc := 0
+	for _, n := range nums {
+		acc += n
+	}
+	return acc
+}
+
+// Min returns the smallest number in a slice
+func Min(nums []int) int {
+	res := nums[0]
+	for _, n := range nums {
+		if n < res {
+			res = n
+		}
+	}
+	return res
+}
+
+// Max returns the largest number in a slice
+func Max(nums []int) int {
+	res := nums[0]
+	for _, n := range nums {
+		if n > res {
+			res = n
+		}
+	}
+	return res
+}
